@@ -84,7 +84,7 @@ fun SignUpScreen(navController: NavController, vm: FbViewModel) {
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(400.dp)
+                .height(600.dp)
                 .verticalScroll(state = rememberScrollState())
         ) {
 

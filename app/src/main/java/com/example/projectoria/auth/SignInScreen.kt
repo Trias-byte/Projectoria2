@@ -51,76 +51,75 @@ fun SignInScreen(navController: NavController, vm: FbViewModel) {
         modifier =  Modifier.fillMaxSize()
     ) {
         TopMenu()
-        Box(
+
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
-                .fillMaxWidth()
-                .height(400.dp)
+                .height(600.dp)
+                .verticalScroll(state = rememberScrollState())
         ) {
-            Column(
-                verticalArrangement = Arrangement.SpaceAround,
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .verticalScroll(state = rememberScrollState())
+
+            Spacer(modifier = Modifier.height(margin))
+
+            HeaderText(text = "Вход")
+
+            TextInput(placeholder = "Email", FieldIcon = R.drawable.mail,
+                value = email.value,
+                funny = { email.value = it }
+            )
+            TextInput(
+                placeholder = "Password", FieldIcon = R.drawable.password,
+                value = loginPassword.value,
+                funny = { loginPassword.value = it },
+                type = KeyboardType.Password
+            )
+
+            Spacer(modifier = Modifier.height(30.dp))
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceAround,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-
-                Spacer(modifier = Modifier.height(margin))
-
-                HeaderText(text = "Вход")
-
-                TextInput(placeholder = "Email", FieldIcon = R.drawable.mail,
-                    value = email.value,
-                    funny = { email.value = it }
-                )
-                TextInput(
-                    placeholder = "Password", FieldIcon = R.drawable.password,
-                    value = loginPassword.value,
-                    funny = { loginPassword.value = it },
-                    type = KeyboardType.Password
-                )
-
-                Spacer(modifier = Modifier.height(30.dp))
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceAround,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    ImportantText(
-                        text = "Регистрация",
-                        modifier = Modifier.clickable {
-                            navController.navigate(route = DestinationScreen.SignUp.route) {
-                                launchSingleTop = true
-                            }
+                ImportantText(
+                    text = "Регистрация",
+                    modifier = Modifier.clickable {
+                        navController.navigate(route = DestinationScreen.SignUp.route) {
+                            launchSingleTop = true
                         }
-                    )
+                    }
+                )
 //                    Button(
 //                        modifier = Modifier
 //                            .background(color = Color.Green),
 //
 //                    ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.okey),
-                        contentDescription = "д",
-                        modifier = Modifier
-                            .height(40.dp)
-                            .clickable {
+                Image(
+                    painter = painterResource(id = R.drawable.okey),
+                    contentDescription = "д",
+                    modifier = Modifier
+                        .height(40.dp)
+                        .clickable {
+                            if  (email.value.isNotEmpty() and loginPassword.value.isNotEmpty()) {
                                 vm.login(
                                     email = email.value,
                                     password = loginPassword.value
                                 )
-
                             }
-                            .width(40.dp),
-                        alignment = Alignment.CenterEnd
 
-                    )
+                        }
+                        .width(40.dp),
+                    alignment = Alignment.CenterEnd
+
+                )
 
 
-                }
-                Spacer(modifier = Modifier.height(margin))
             }
-
+            Spacer(modifier = Modifier.height(margin))
         }
+
+
         BottomMenu()
     }
 }

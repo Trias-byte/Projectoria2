@@ -43,7 +43,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 sealed class DestinationScreen(val route: String){
-    data object Main: DestinationScreen("main")
+    data object MainAuth: DestinationScreen("main")
     data object SignIn: DestinationScreen("signIn")
     data object SignUp: DestinationScreen("signUp")
     data object Successful: DestinationScreen("successful")
@@ -58,8 +58,8 @@ fun AuthenticationApp(){
 
     NotificationMessage(vm)
 
-    NavHost(navController = navController, startDestination = DestinationScreen.Main.route){
-        composable(DestinationScreen.Main.route){
+    NavHost(navController = navController, startDestination = DestinationScreen.MainAuth.route){
+        composable(DestinationScreen.MainAuth.route){
             MainAuthScreen(navController = navController, vm = vm)
         }
         composable(DestinationScreen.SignIn.route){

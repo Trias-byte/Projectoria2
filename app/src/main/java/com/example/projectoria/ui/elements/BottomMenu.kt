@@ -9,7 +9,13 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -17,14 +23,24 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.projectoria.R
 
-@Composable
-fun BottomMenu(){
-    var menuVisibility by remember { mutableStateOf(false) }
+//enum class BottomNavigationItem(val icon: ImageVector, val route: Screens ){
+//    FEED(Icons.Default.Home, Screens.Feeds),
+//    SEARCH(Icons.Default.Search, Screens.Search),
+//    PROFILE(Icons.Default.Person, Screens.Profile)
+//
+//}
 
+@Composable
+fun BottomMenu (
+//    navController: NavController
+){
+    var menuVisibility by remember { mutableStateOf(false) }
     Box(
         modifier = Modifier
             .background(Color.Transparent)
@@ -32,7 +48,43 @@ fun BottomMenu(){
             .height(110.dp)
             .width(352.dp)
     ) {
-
+//        if (menuVisibility) {
+//            Row(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .wrapContentHeight()
+//                    .background(Color.White)
+//            ) {
+//                for (item in BottomNavigationItem.values()){
+//                    Box(
+//                        modifier = Modifier
+//                            .clickable{
+//                                navController.navigate(item.route.route){
+//
+//                                }
+//                            }
+//                    ) {
+//                        Image(
+//                            modifier = Modifier
+//                                .width(20.dp)
+//                                .height(25.dp),
+//
+//                            imageVector = item.icon,
+//                            contentDescription = item.route.route,
+//                        )
+//                        Image(
+//                            modifier = Modifier
+//                                .size(40.dp),
+//                            painter = painterResource(id = R.drawable.background_ellipse_menu),
+//                            contentDescription = "background_ellipse",
+//
+//                            )
+//
+//                    }
+//
+//                }
+//            }
+//        }
         Row(
             modifier = Modifier
                 .height(110.dp)
@@ -53,7 +105,7 @@ fun BottomMenu(){
             )
         }
     }
+
 }
 
 private operator fun Boolean.inc() = !this
-

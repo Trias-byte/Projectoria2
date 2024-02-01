@@ -53,6 +53,18 @@ class FbViewModel @Inject constructor(
             }
     }
 
+
+    fun logOut(){
+        inProgress.value = true
+
+        auth.signOut()
+
+        signedIn.value = false
+
+        inProgress.value = false
+
+    }
+
     fun handlerException(exception: Exception? = null, customMessage: String = ""){
         exception?.printStackTrace()
         val errorMsg = exception?.localizedMessage ?: ""
