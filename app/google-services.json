@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "115766977303",
+    "project_id": "projectoria-96d59",
+    "storage_bucket": "projectoria-96d59.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:115766977303:android:8e9080c0ce710320c84d52",
+        "android_client_info": {
+          "package_name": "com.example.projectoria"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCbOKrDZye73jXSxkxm_sCpnd_xWpHTu2Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
