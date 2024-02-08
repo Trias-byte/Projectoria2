@@ -45,12 +45,14 @@ fun MainAuthScreen(navController: NavController, vm: FbViewModel) {
         modifier =  Modifier.fillMaxSize())
     {
 
-        TopMenu()
+        Box(modifier = Modifier.weight(1f)){
+            TopMenu()
+        }
 
         Column(
 
             modifier = Modifier
-                .height(600.dp)
+                .weight(4f)
                 .fillMaxWidth(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -84,7 +86,7 @@ fun MainAuthScreen(navController: NavController, vm: FbViewModel) {
                     ),
                     modifier = Modifier.width(300.dp)
                 ) {
-                    LabelText(text = "зарегестрироваться")
+                    LabelText(text = "заригестрироваться")
                 }
             }
 
@@ -119,7 +121,13 @@ fun MainAuthScreen(navController: NavController, vm: FbViewModel) {
 
         }
 
-        BottomMenu()
+        Column(modifier = Modifier.weight(1f),
+            verticalArrangement = Arrangement.Bottom,
+            horizontalAlignment = Alignment.End,
+        ){
+
+            BottomMenu()
+        }
 
     }
 

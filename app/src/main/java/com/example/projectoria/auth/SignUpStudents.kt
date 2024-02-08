@@ -23,7 +23,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -31,6 +30,7 @@ import com.example.projectoria.DestinationScreen
 import com.example.projectoria.FbViewModel
 import com.example.projectoria.R
 import com.example.projectoria.ui.elements.BottomMenu
+import com.example.projectoria.ui.elements.Demo_ExposedDropdownMenuBox
 import com.example.projectoria.ui.elements.HeaderText
 import com.example.projectoria.ui.elements.ImportantText
 import com.example.projectoria.ui.elements.NormText
@@ -40,35 +40,14 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
 @Composable
-fun SignUpScreen(navController: NavController, vm: FbViewModel) {
-    val login = remember{ mutableStateOf( "" ) }
-    val mail = remember{ mutableStateOf( "" ) }
-    val password = rememberSaveable{ mutableStateOf( "" ) }
-    val repeatPassword = rememberSaveable{ mutableStateOf( "" ) }
+fun SignUpStudents(navController: NavController, vm: FbViewModel){
 
+    val name = remember{ mutableStateOf( "" ) }
+    val form = remember{ mutableStateOf( "" ) }
 
-    val areTeacher = remember{ mutableStateOf(false) }
-
-    var teacherImg by remember {
-        mutableStateOf( R.drawable.teachers_gray)
-    }
-
-    var studentImg by remember {
-        mutableStateOf( R.drawable.student)
-
-    }
-
-
-
-    val margin = 20.dp
-
-    if (vm.signedIn.value){
-        if (areTeacher.value){
-            navController.navigate(DestinationScreen.SignUpTeachers.route)
-        }
-        else{
-            navController.navigate(DestinationScreen.SignUpStudents.route)
-        }
+    if (vm.signedIn.value and vm.fullSignUp.value){
+        vm.fullSignUp.value = false
+        navController.navigate(DestinationScreen.Successful.route)
 
     }
     Column(
@@ -103,62 +82,17 @@ fun SignUpScreen(navController: NavController, vm: FbViewModel) {
 
             HeaderText(text = "Регистрация")
 
-            TextInput(placeholder = "Login", FieldIcon = R.drawable.person,
-                value = login.value,
-                funny = { login.value = it }
+            TextInput(placeholder = "Имя", FieldIcon = R.drawable.person,
+                value = name.value,
+                funny = { name.value = it }
             )
 
-            TextInput(placeholder = "Mail", FieldIcon = R.drawable.mail,
-                value = mail.value,
-                funny = { mail.value = it }
-            )
+            Demo_ExposedDropdownMenuBox(arrayOf("9", "10", "11"), form.value,funny = { form.value = it })
 
-            TextInput(
-                placeholder = "Password", FieldIcon = R.drawable.password,
-                value = password.value,
-                funny = { password.value = it },
-                type = KeyboardType.Password
-            )
 
-            TextInput(
-                placeholder = "Repeat password", FieldIcon = R.drawable.password,
-                value = repeatPassword.value,
-                funny = { repeatPassword.value = it },
-                type = KeyboardType.Password
-            )
+
             Spacer(modifier = Modifier.height(20.dp))
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painter = painterResource(id = studentImg),
-                    contentDescription = "studentRole",
-                    modifier = Modifier
-                        .height(50.dp)
-                        .clickable {
-                            studentImg = R.drawable.student_blue
-                            teacherImg = R.drawable.teachers_gray
-                            areTeacher.value = false
-                        }
-                )
-                Spacer(modifier = Modifier.width(30.dp))
-                NormText(text = "or")
-                Spacer(modifier = Modifier.width(30.dp))
-                Image(
-                    painter = painterResource(id = teacherImg),
-                    contentDescription = "studentRole",
-                    modifier = Modifier
-                        .height(50.dp)
-                        .clickable {
-                            studentImg = R.drawable.student
-                            teacherImg = R.drawable.teachers_red
-                            areTeacher.value = true
-                        }
-                )
-            }
-            Spacer(modifier = Modifier.height(20.dp))
+
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceAround,
@@ -167,9 +101,9 @@ fun SignUpScreen(navController: NavController, vm: FbViewModel) {
                 ImportantText(
                     text = "Войти",
                     modifier = Modifier.clickable {
-                        navController.navigate(route = DestinationScreen.SignIn.route) {
-                            launchSingleTop = true
-                        }
+//                        navController.navigate(route = DestinationScreen.SignIn.route) {
+//                            launchSingleTop = true
+//                        }
                     }
                 )
 //
@@ -178,14 +112,7 @@ fun SignUpScreen(navController: NavController, vm: FbViewModel) {
                     contentDescription = "д",
                     modifier = Modifier
                         .clickable {
-                            vm.onSignUp(
-                                email = mail.value,
-                                password = password.value,
-                                login = login.value,
-                                areTeacher = areTeacher.value
-                            )
-
-
+                            vm.detailStudentSignUp(name.value, form.value)
 
                         }
                         .height(40.dp)
@@ -197,7 +124,7 @@ fun SignUpScreen(navController: NavController, vm: FbViewModel) {
 
             }
 
-    }
+        }
 
         Column(modifier = Modifier.weight(1f),
             verticalArrangement = Arrangement.Bottom,

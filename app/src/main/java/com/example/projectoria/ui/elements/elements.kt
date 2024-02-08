@@ -2,6 +2,7 @@ package com.example.projectoria.ui.elements
 
 
 import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 
@@ -9,7 +10,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -21,6 +25,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
@@ -231,32 +236,48 @@ fun PasswordInput(
 }
 data class FormModel(val name:String, val type: KeyboardType, val image : Int)
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FormElement(model: FormModel){
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement =  Arrangement.Start,
+fun Demo_ExposedDropdownMenuBox(array: Array<String>, value: String, funny: (String) -> Unit){
+    val context = LocalContext.current
+
+    var expanded by remember { mutableStateOf(false) }
+
+
+    Box(
         modifier = Modifier
-            .wrapContentHeight()
+            .fillMaxWidth()
+            .padding(32.dp)
     ) {
-        val userInput = remember { mutableStateOf("") }
+        ExposedDropdownMenuBox(
+            expanded = expanded,
+            onExpandedChange = {
+                expanded = !expanded
+            }
+        ) {
+            TextField(
+                value = value,
+                onValueChange = {},
+                readOnly = true,
+                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+                modifier = Modifier.menuAnchor()
+            )
 
-        Spacer(modifier = Modifier.width(10.dp))
-        Image(
-            painter = painterResource(id = model.image),
-            contentDescription = "",
-            modifier = Modifier
-                .width(50.dp)
-                .height(50.dp),
-            alignment = Alignment.Center
-
-        )
-        TextInput(
-            placeholder = model.name,
-            value = userInput.value,
-            funny = {userInput.value = it},
-            type = model.type,
-            FieldIcon = model.image
-        )
+            ExposedDropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false }
+            ) {
+                array.forEach { item ->
+                    DropdownMenuItem(
+                        text = { Text(text = item) },
+                        onClick = {
+                            funny(item)
+                            expanded = false
+//                            Toast.makeText(context, item, Toast.LENGTH_SHORT).show()
+                        }
+                    )
+                }
+            }
+        }
     }
 }

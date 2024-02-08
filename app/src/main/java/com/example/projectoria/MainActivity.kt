@@ -18,6 +18,8 @@ import com.example.projectoria.auth.MainAuthScreen
 import com.example.projectoria.auth.OnSuccessfulScreen
 import com.example.projectoria.auth.SignInScreen
 import com.example.projectoria.auth.SignUpScreen
+import com.example.projectoria.auth.SignUpStudents
+import com.example.projectoria.auth.SignUpTeachers
 import com.example.projectoria.main.NotificationMessage
 import com.example.projectoria.pages.TestCreator
 import com.example.projectoria.ui.theme.ProjectoriaTheme
@@ -46,6 +48,10 @@ sealed class DestinationScreen(val route: String){
     data object MainAuth: DestinationScreen("main")
     data object SignIn: DestinationScreen("signIn")
     data object SignUp: DestinationScreen("signUp")
+
+    data object SignUpTeachers: DestinationScreen("signUpTeachers")
+
+    data object SignUpStudents: DestinationScreen("SignUpStudents")
     data object Successful: DestinationScreen("successful")
 
 }
@@ -67,6 +73,12 @@ fun AuthenticationApp(){
         }
         composable(DestinationScreen.SignUp.route){
             SignUpScreen(navController = navController, vm = vm)
+        }
+        composable(DestinationScreen.SignUpTeachers.route){
+            SignUpTeachers(navController = navController, vm = vm)
+        }
+        composable(DestinationScreen.SignUpStudents.route){
+            SignUpStudents(navController = navController, vm = vm)
         }
         composable(DestinationScreen.Successful.route){
             OnSuccessfulScreen(navController = navController, vm = vm)
