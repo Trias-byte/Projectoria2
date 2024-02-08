@@ -50,15 +50,20 @@ class FbViewModel @Inject constructor(
             }
     }
 
-    fun detailStudentSignUp(name:String, form:String){
+    fun detailStudentSignUp(name:String, form:String, subject: String){
         inProgress.value = true
         val fullName = name.split(" ").toTypedArray()
 
-        if  ( fullName.size != 3 ){
+        if  ( fullName.size < 3 ){
             handlerException(customMessage = "Заполните поле имя")
             return
-        }else if(form.isEmpty()){
-            handlerException(customMessage = "Выберите класс")
+        }else if(form.isEmpty() and subject.isEmpty()){
+            if (form.isEmpty()){
+                handlerException(customMessage = "Выберите класс")
+            }
+            if (subject.isEmpty()){
+                handlerException(customMessage = "Выберите предмет")
+            }
             return
         }
         else{
@@ -69,6 +74,7 @@ class FbViewModel @Inject constructor(
             userReference.child("fatherName").setValue(fullName[2])
 
             userReference.child("form").setValue(form)
+            userReference.child("subject").setValue(subject)
 
 
 

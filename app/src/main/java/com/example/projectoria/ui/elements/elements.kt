@@ -7,8 +7,10 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -264,6 +266,9 @@ fun Demo_ExposedDropdownMenuBox(array: Array<String>, value: String, funny: (Str
             )
 
             ExposedDropdownMenu(
+                modifier = Modifier
+                    .height(200.dp)
+                    .verticalScroll(rememberScrollState()),
                 expanded = expanded,
                 onDismissRequest = { expanded = false }
             ) {

@@ -44,6 +44,7 @@ fun SignUpStudents(navController: NavController, vm: FbViewModel){
 
     val name = remember{ mutableStateOf( "" ) }
     val form = remember{ mutableStateOf( "" ) }
+    val subject = remember{ mutableStateOf( "" ) }
 
     if (vm.signedIn.value and vm.fullSignUp.value){
         vm.fullSignUp.value = false
@@ -112,7 +113,7 @@ fun SignUpStudents(navController: NavController, vm: FbViewModel){
                     contentDescription = "д",
                     modifier = Modifier
                         .clickable {
-                            vm.detailStudentSignUp(name.value, form.value)
+                            vm.detailStudentSignUp(name.value, form.value, subject.value )
 
                         }
                         .height(40.dp)

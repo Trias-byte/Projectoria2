@@ -1,4 +1,4 @@
-package com.example.projectoria.auth
+package com.example.projectoria.pages
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -34,7 +34,7 @@ import com.example.projectoria.ui.elements.TextInput
 import com.example.projectoria.ui.elements.TopMenu
 
 @Composable
-fun SignUpTeachers(navController: NavController, vm: FbViewModel){
+fun ProjectRegistration(navController: NavController, vm: FbViewModel){
 
     val name = remember{ mutableStateOf( "" ) }
     val subject = remember{ mutableStateOf( "" ) }
