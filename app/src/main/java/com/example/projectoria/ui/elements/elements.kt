@@ -4,6 +4,7 @@ package com.example.projectoria.ui.elements
 import android.annotation.SuppressLint
 import android.widget.Toast
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 
 import androidx.compose.foundation.layout.*
@@ -38,6 +39,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.core.app.NotificationCompat.getColor
 
 import com.example.projectoria.R
 
@@ -73,6 +75,9 @@ fun BoldText(text: String, modifier: Modifier = Modifier){ // It's to highlight 
         textAlign = TextAlign.Left,
     )
 }
+
+
+
 @Composable
 fun NormText(text: String, modifier: Modifier = Modifier){ // It's text
     Text(text = text,
@@ -106,7 +111,8 @@ fun TextInput(
     FieldIcon: Int,
     value: String,
     funny: (String) -> Unit,
-    type: KeyboardType = KeyboardType.Text
+    type: KeyboardType = KeyboardType.Text,
+    lines: Int = 1
 ) {
     if (type != KeyboardType.Password){
         TextField(
@@ -114,7 +120,7 @@ fun TextInput(
 
             onValueChange = funny,
 
-            maxLines = 1,
+            maxLines = lines,
 
             label = { Text(
                 text = placeholder,
@@ -280,6 +286,78 @@ fun Demo_ExposedDropdownMenuBox(array: Array<String>, value: String, funny: (Str
                             expanded = false
 //                            Toast.makeText(context, item, Toast.LENGTH_SHORT).show()
                         }
+                    )
+                }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun Demo_ExposedDropdownMenuBoxWithMultipleChoice(
+    array: Array<String>,
+    value: String,
+    funny: (String) -> Unit
+){
+    val context = LocalContext.current
+
+    var expanded by remember { mutableStateOf(false) }
+    var list = emptyArray<String>()
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(32.dp)
+    ) {
+        ExposedDropdownMenuBox(
+            expanded = expanded,
+            onExpandedChange = {
+                expanded = !expanded
+            }
+        ) {
+            TextField(
+                value = if (list.size <= 1) value else list[0] + " и еще ${list.size-1}",
+                onValueChange = {},
+                readOnly = true,
+                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+                modifier = Modifier.menuAnchor()
+            )
+
+            ExposedDropdownMenu(
+                modifier = Modifier
+                    .height(200.dp)
+                    .verticalScroll(rememberScrollState()),
+                expanded = expanded,
+                onDismissRequest = { expanded = false }
+            ) {
+                array.forEach { item ->
+                    DropdownMenuItem(
+                        modifier = Modifier.background( colorResource(R.color.white)),
+                        text = { Text(text = item) },
+                        onClick = {
+                            var flag = false
+                            var newList = emptyArray<String>()
+                            for (its in list){
+                                if (its != item){
+                                    newList += item
+                                }else{
+                                    flag = true
+                                }
+                            }
+                            list = newList
+
+                            if(!flag){
+
+                                list += item
+
+                            }
+                            funny(list.joinToString(" , "))
+                            expanded = false
+
+//                            Toast.makeText(context, item, Toast.LENGTH_SHORT).show()
+                        },
+
                     )
                 }
             }

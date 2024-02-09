@@ -26,6 +26,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import com.example.projectoria.DestinationScreen
 import com.example.projectoria.FbViewModel
 import com.example.projectoria.R
@@ -48,7 +49,9 @@ fun SignUpStudents(navController: NavController, vm: FbViewModel){
 
     if (vm.signedIn.value and vm.fullSignUp.value){
         vm.fullSignUp.value = false
-        navController.navigate(DestinationScreen.Successful.route)
+        navController.navigate(DestinationScreen.Profile.route){
+            popUpTo(navController.graph.findStartDestination().id)
+        }
 
     }
     Column(

@@ -28,14 +28,15 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.projectoria.DestinationScreen
 import com.example.projectoria.R
 
-//enum class BottomNavigationItem(val icon: ImageVector, val route: Screens ){
-//    FEED(Icons.Default.Home, Screens.Feeds),
-//    SEARCH(Icons.Default.Search, Screens.Search),
-//    PROFILE(Icons.Default.Person, Screens.Profile)
-//
-//}
+enum class BottomNavigationItem(val icon: ImageVector, val route: DestinationScreen){
+    FEED(Icons.Default.Home, DestinationScreen.ProjectList),
+    SEARCH(Icons.Default.Search, DestinationScreen.Profile),
+    PROFILE(Icons.Default.Person, DestinationScreen.Profile)
+
+}
 
 @Composable
 fun BottomMenu (
@@ -49,43 +50,79 @@ fun BottomMenu (
             .height(110.dp)
             .width(352.dp)
     ) {
-//        if (menuVisibility) {
-//            Row(
-//                modifier = Modifier
-//                    .fillMaxWidth()
-//                    .wrapContentHeight()
-//                    .background(Color.White)
-//            ) {
-//                for (item in BottomNavigationItem.values()){
-//                    Box(
-//                        modifier = Modifier
-//                            .clickable{
-//                                navController.navigate(item.route.route){
-//
-//                                }
-//                            }
-//                    ) {
-//                        Image(
-//                            modifier = Modifier
-//                                .width(20.dp)
-//                                .height(25.dp),
-//
-//                            imageVector = item.icon,
-//                            contentDescription = item.route.route,
-//                        )
-//                        Image(
-//                            modifier = Modifier
-//                                .size(40.dp),
-//                            painter = painterResource(id = R.drawable.background_ellipse_menu),
-//                            contentDescription = "background_ellipse",
-//
-//                            )
-//
-//                    }
-//
-//                }
-//            }
-//        }
+
+        Row(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.Transparent),
+            verticalAlignment = Alignment.Bottom,
+            horizontalArrangement = Arrangement.End
+        ){
+            Image(
+                painter = painterResource(id = R.drawable.sc_pr_botom),
+                contentDescription = "bottom",
+                modifier = Modifier
+                    .width(292.dp)
+                    .height(110.dp)
+                    .clickable {
+                        ++menuVisibility
+                    }
+            )
+        }
+    }
+
+}
+
+
+@Composable
+fun BottomMenuActive (
+    navController: NavController
+){
+    var menuVisibility by remember { mutableStateOf(false) }
+    Box(
+        modifier = Modifier
+            .background(Color.Transparent)
+            .fillMaxWidth()
+            .height(110.dp)
+            .width(352.dp)
+    ) {
+        if (menuVisibility) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .background(Color.White)
+            ) {
+                for (item in BottomNavigationItem.entries){
+                    Box(
+                        modifier = Modifier
+                            .clickable{
+                                navController.navigate(item.route.route){
+
+                                }
+                            }
+                    ) {
+                        Image(
+                            modifier = Modifier
+                                .width(20.dp)
+                                .height(25.dp),
+
+                            imageVector = item.icon,
+                            contentDescription = item.route.route,
+                        )
+                        Image(
+                            modifier = Modifier
+                                .size(40.dp),
+                            painter = painterResource(id = R.drawable.background_ellipse_menu),
+                            contentDescription = "background_ellipse",
+
+                            )
+
+                    }
+
+                }
+            }
+        }
         Row(
             modifier = Modifier
                 .fillMaxSize()

@@ -42,7 +42,7 @@ fun SignUpTeachers(navController: NavController, vm: FbViewModel){
 
     if (vm.signedIn.value and vm.fullSignUp.value){
         vm.fullSignUp.value = false
-        navController.navigate(DestinationScreen.Successful.route){
+        navController.navigate(DestinationScreen.Profile.route){
             popUpTo(navController.graph.findStartDestination().id)
         }
 

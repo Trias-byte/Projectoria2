@@ -22,6 +22,10 @@ import com.example.projectoria.auth.SignUpStudents
 import com.example.projectoria.auth.SignUpTeachers
 import com.example.projectoria.main.NotificationMessage
 import com.example.projectoria.pages.TestCreator
+import com.example.projectoria.pages.projects.ProjectDetail
+import com.example.projectoria.pages.projects.ProjectList
+import com.example.projectoria.pages.projects.ProjectRegistration
+import com.example.projectoria.pages.usersData.Profile
 import com.example.projectoria.ui.theme.ProjectoriaTheme
 import com.google.api.Authentication
 import dagger.hilt.android.AndroidEntryPoint
@@ -45,6 +49,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 sealed class DestinationScreen(val route: String){
+    // Auth links
     data object MainAuth: DestinationScreen("main")
     data object SignIn: DestinationScreen("signIn")
     data object SignUp: DestinationScreen("signUp")
@@ -53,6 +58,19 @@ sealed class DestinationScreen(val route: String){
 
     data object SignUpStudents: DestinationScreen("SignUpStudents")
     data object Successful: DestinationScreen("successful")
+
+    // Project links
+    data object ProjectList: DestinationScreen("projectList")
+    data object ProjectRegistration: DestinationScreen("projectRegistration")
+    data object ProjectDetail: DestinationScreen("projectDetail")
+
+    // UserData Links
+    data object Profile: DestinationScreen("profile")
+
+    data object TeachersList: DestinationScreen("teachersList")
+
+
+
 
 }
 @Composable
@@ -65,6 +83,8 @@ fun AuthenticationApp(){
     NotificationMessage(vm)
 
     NavHost(navController = navController, startDestination = DestinationScreen.MainAuth.route){
+
+        // Auth links
         composable(DestinationScreen.MainAuth.route){
             MainAuthScreen(navController = navController, vm = vm)
         }
@@ -83,6 +103,26 @@ fun AuthenticationApp(){
         composable(DestinationScreen.Successful.route){
             OnSuccessfulScreen(navController = navController, vm = vm)
         }
+
+
+        // Project links
+        composable(DestinationScreen.ProjectList.route){
+            ProjectList(navController = navController, vm = vm)
+        }
+        composable(DestinationScreen.ProjectRegistration.route){
+            ProjectRegistration(navController = navController, vm = vm)
+        }
+        composable(DestinationScreen.ProjectDetail.route){
+            ProjectDetail(navController = navController, vm = vm)
+        }
+
+
+        // UserData Links
+        composable(DestinationScreen.Profile.route){
+            Profile(navController = navController, vm = vm)
+        }
+
+
     }
 
 }

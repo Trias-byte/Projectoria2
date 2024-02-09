@@ -3,12 +3,16 @@ package com.example.projectoria
 import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import com.example.projectoria.pages.Contact
+import com.google.android.gms.tasks.Task
 //import com.example.projectoria.domain.use_cases.AuthenticationUseCases
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.Exclude
 import com.google.firebase.database.IgnoreExtraProperties
+import com.google.firebase.database.getValue
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,10 +20,10 @@ import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
-class FbViewModel @Inject constructor(
-    val auth: FirebaseAuth
+    class FbViewModel @Inject constructor(
+        val auth: FirebaseAuth
 
-): ViewModel(){
+    ): ViewModel(){
 
 
 
@@ -29,7 +33,7 @@ class FbViewModel @Inject constructor(
     val error = mutableStateOf(false)
     val fullSignUp = mutableStateOf(false)
 
-    fun onSignUp(email: String, password:String, login: String, areTeacher:Boolean, ){
+    fun onSignUp(email: String, password:String, login: String, areTeacher:Boolean ){
         inProgress.value = true
 
         auth.createUserWithEmailAndPassword(email, password)
@@ -54,8 +58,9 @@ class FbViewModel @Inject constructor(
         inProgress.value = true
         val fullName = name.split(" ").toTypedArray()
 
-        if  ( fullName.size < 3 ){
+        if  (( fullName.size < 3) and (fullName[0].isNotEmpty()) and (fullName[1].isNotEmpty()) and (fullName[2].isNotEmpty())){
             handlerException(customMessage = "Заполните поле имя")
+            inProgress.value = false
             return
         }else if(form.isEmpty() and subject.isEmpty()){
             if (form.isEmpty()){
@@ -63,8 +68,11 @@ class FbViewModel @Inject constructor(
             }
             if (subject.isEmpty()){
                 handlerException(customMessage = "Выберите предмет")
+
             }
+            inProgress.value = false
             return
+
         }
         else{
             val database = Firebase.database.reference
@@ -142,7 +150,42 @@ class FbViewModel @Inject constructor(
 
     }
 
-    fun handlerException(exception: Exception? = null, customMessage: String = ""){
+    fun isTeacher(): Any? {
+
+        if (!signedIn.value){
+            return null
+        }
+        val a = null
+        val database = Firebase.database
+        val userReference = database.reference.child("UsersData").child(auth.uid.toString())
+        return userReference.child("AreTeacher").get().addOnSuccessListener{
+             it.getValue<Boolean>()
+        }
+
+    }
+
+
+
+    data class Project(
+        val names:String,
+        val subject:String,
+        val masterName:String,
+        val projectName:String,
+        val topic:String,
+        val problem:String,
+        val hypothesis:String,
+        val description:String,
+        val relevance:String,
+    )
+
+    fun createProject(project:Project){
+        val database = Firebase.database
+        val projectReference = database.reference.child("Project").child(project.projectName)
+        projectReference.setValue(project)
+
+    }
+
+    private fun handlerException(exception: Exception? = null, customMessage: String = ""){
         exception?.printStackTrace()
         val errorMsg = exception?.localizedMessage ?: ""
         val message = if (customMessage.isEmpty()) errorMsg else "$customMessage: $errorMsg"
