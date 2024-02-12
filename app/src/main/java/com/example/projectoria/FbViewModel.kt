@@ -33,6 +33,7 @@ import javax.inject.Inject
     val popupNotification = mutableStateOf<Event<String>?>(null)
     val error = mutableStateOf(false)
     val fullSignUp = mutableStateOf(false)
+    private val areTeacher = mutableStateOf<Boolean?>(null)
 
     fun onSignUp(email: String, password:String, login: String, areTeacher:Boolean ){
         inProgress.value = true
@@ -159,7 +160,7 @@ import javax.inject.Inject
         val database = Firebase.database
         val userReference = database.reference.child("UsersData").child(auth.uid.toString())
         // var result:Map<String, String>
-        var a:Boolean? = null
+//        var a:Boolean? = null
         userReference.get().addOnSuccessListener{
             if (it.key == null){
                 Log.e("firebase", "Null value")
@@ -167,11 +168,11 @@ import javax.inject.Inject
             }
             else{
                 val userInf = it.getValue<UserInf>()
-                a = userInf?.areTeacher
-                Log.i("firebase", "value is $a")
+                areTeacher.value = userInf?.areTeacher
+                Log.i("firebase", "value is $areTeacher.value")
             }
         }
-        return a
+        return areTeacher.value
     }
 
 
