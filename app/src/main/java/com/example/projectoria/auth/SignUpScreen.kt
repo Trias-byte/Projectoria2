@@ -178,6 +178,8 @@ fun SignUpScreen(navController: NavController, vm: FbViewModel) {
                     contentDescription = "д",
                     modifier = Modifier
                         .clickable {
+
+
                             vm.onSignUp(
                                 email = mail.value,
                                 password = password.value,

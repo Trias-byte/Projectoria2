@@ -42,15 +42,15 @@ import com.example.projectoria.ui.elements.TopMenu
 @Composable
 fun Profile(navController: NavController, vm: FbViewModel) {
     
-//    if (vm.isTeacher() == true){
-//        Teacher(navController, vm )
-//    }
-//    else if (vm.isTeacher() == false){
+    if (vm.isTeacher()==true){
+        Teacher(navController, vm )
+    }
+    else if (vm.isTeacher() == false){
     Student(navController, vm )
-//    }
-//    else{
-//        HeaderText(text = vm.isTeacher().toString())
-//    }
+    }
+    else{
+        HeaderText(text = vm.isTeacher().toString())
+    }
 }
 @Composable
 fun Student(navController: NavController, vm: FbViewModel){

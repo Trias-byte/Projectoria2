@@ -16,6 +16,7 @@ import com.google.firebase.database.getValue
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.tasks.await
 import java.lang.Exception
 import javax.inject.Inject
 
@@ -150,18 +151,27 @@ import javax.inject.Inject
 
     }
 
-    fun isTeacher(): Any? {
+    fun isTeacher(): Boolean?{
 
         if (!signedIn.value){
             return null
         }
-        val a = null
         val database = Firebase.database
         val userReference = database.reference.child("UsersData").child(auth.uid.toString())
-        return userReference.child("AreTeacher").get().addOnSuccessListener{
-             it.getValue<Boolean>()
-        }
+        // var result:Map<String, String>
+        var a:Boolean? = null
+        userReference.get().addOnSuccessListener{
+            if (it.key == null){
+                Log.e("firebase", "Null value")
 
+            }
+            else{
+                val userInf = it.getValue<UserInf>()
+                a = userInf?.areTeacher
+                Log.i("firebase", "value is $a")
+            }
+        }
+        return a
     }
 
 
